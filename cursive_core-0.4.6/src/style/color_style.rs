@@ -298,7 +298,7 @@ where
 /// Either a color from the palette, or a direct color.
 ///
 /// The `Default` implementation returns `InheritParent`.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Default)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum ColorType {
     /// Uses a color from the application palette.
     ///
@@ -310,8 +310,13 @@ pub enum ColorType {
     Color(Color),
 
     /// Re-uses the color from the parent.
-    #[default]
     InheritParent,
+}
+
+impl Default for ColorType {
+    fn default() -> Self {
+        ColorType::InheritParent
+    }
 }
 
 impl ColorType {

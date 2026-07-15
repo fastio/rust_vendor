@@ -10,10 +10,9 @@ use unicode_width::UnicodeWidthStr;
 /// The width of a cell.
 ///
 /// Most characters are single-width. Some asian characters and emojis are double-width.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Default)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum CellWidth {
     /// This character takes a single cell in the grid.
-    #[default]
     Single,
 
     /// This character takes 2 cells in the grid (mostly for emojis and asian characters).
@@ -27,6 +26,12 @@ pub enum CellWidth {
 
     /// This character takes 5 cells in the grid (hindi???).
     Quintuple,
+}
+
+impl Default for CellWidth {
+    fn default() -> Self {
+        CellWidth::Single
+    }
 }
 
 impl CellWidth {

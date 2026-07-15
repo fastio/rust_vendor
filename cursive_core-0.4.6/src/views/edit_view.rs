@@ -644,7 +644,7 @@ impl View for EditView {
             Event::Key(Key::Left) | Event::CtrlChar('b') if self.cursor > 0 => {
                 let len = self.content[..self.cursor]
                     .graphemes(true)
-                    .next_back()
+                    .last()
                     .unwrap()
                     .len();
                 let cursor = self.cursor - len;
@@ -662,7 +662,7 @@ impl View for EditView {
             Event::Key(Key::Backspace) if self.cursor > 0 => {
                 let len = self.content[..self.cursor]
                     .graphemes(true)
-                    .next_back()
+                    .last()
                     .unwrap()
                     .len();
                 self.cursor -= len;

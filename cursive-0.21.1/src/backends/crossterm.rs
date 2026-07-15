@@ -258,7 +258,7 @@ impl Backend {
         });
     }
 
-    fn stdout_mut(&self) -> RefMut<'_, BufWriter<Stdout>> {
+    fn stdout_mut(&self) -> RefMut<BufWriter<Stdout>> {
         self.stdout.borrow_mut()
     }
 
@@ -289,8 +289,10 @@ impl Backend {
                     }
                     MouseEventKind::ScrollDown => MouseEvent::WheelDown,
                     MouseEventKind::ScrollUp => MouseEvent::WheelUp,
-                    MouseEventKind::ScrollLeft => MouseEvent::WheelLeft,
-                    MouseEventKind::ScrollRight => MouseEvent::WheelRight,
+                    MouseEventKind::ScrollLeft | MouseEventKind::ScrollRight => {
+                        // TODO: Currently unsupported.
+                        return None;
+                    }
                 };
 
                 Event::Mouse {

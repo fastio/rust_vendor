@@ -916,11 +916,7 @@ impl View for Dialog {
     }
 
     fn focus_view(&mut self, selector: &Selector) -> Result<EventResult, ViewNotFound> {
-        let res = self.content.focus_view(selector);
-        if res.is_ok() {
-            self.set_focus(DialogFocus::Content);
-        }
-        res
+        self.content.focus_view(selector)
     }
 
     fn important_area(&self, _: Vec2) -> Rect {

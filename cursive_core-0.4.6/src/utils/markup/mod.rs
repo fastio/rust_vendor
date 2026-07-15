@@ -83,7 +83,7 @@ impl<'a> PlainStr<'a> {
     }
 
     /// Get a `StyledStr` borrowing this `PlainStr`.
-    pub fn as_styled_str(&self) -> StyledStr<'_> {
+    pub fn as_styled_str(&self) -> StyledStr {
         StyledStr::from_spanned_text(self)
     }
 }

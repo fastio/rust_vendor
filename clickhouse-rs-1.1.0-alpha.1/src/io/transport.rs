@@ -119,10 +119,7 @@ impl ClickhouseTransport {
             }
         }
 
-        let mut transport = h.ok_or(Error::Driver(DriverError::UnexpectedPacket {
-            packet: "<none>",
-            context: "clear (expected Pong/Eof)",
-        }))?;
+        let mut transport = h.ok_or(Error::Driver(DriverError::UnexpectedPacket))?;
         transport.inconsistent = false;
         Ok(transport)
     }
@@ -322,19 +319,9 @@ impl PacketStream {
                 Ok(Packet::Eof(inner)) => h = Some(inner),
                 Ok(Packet::Block(block)) => b = Some(block),
                 Ok(Packet::Exception(e)) => return Err(Error::Server(e)),
-                // Progress/ProfileInfo/TableColumns can show up at any point
-                // in a query or INSERT response (e.g. async_insert sends a
-                // zero-valued Progress before EndOfStream). Skip them.
-                Ok(Packet::TableColumns(_))
-                | Ok(Packet::ProfileInfo(_))
-                | Ok(Packet::Progress(_)) => (),
+                Ok(Packet::TableColumns(_)) => (),
                 Err(e) => return Err(Error::Io(e)),
-                Ok(other) => {
-                    return Err(Error::Driver(DriverError::UnexpectedPacket {
-                        packet: other.variant_name(),
-                        context: "read_block",
-                    }))
-                }
+                _ => return Err(Error::Driver(DriverError::UnexpectedPacket)),
             }
         }
 
